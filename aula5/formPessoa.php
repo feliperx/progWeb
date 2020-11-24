@@ -1,9 +1,17 @@
+<?php
+    require "./Banco.php"; 
+    $pdo = Banco::connect(); 
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Cadastro Pessoa</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
 </head>
 
 <body>
@@ -34,6 +42,38 @@
 
     </form>
 
+    <?php 
+    $sql = "SELECT id, nome, cpf, data_de_nascimento, telefone, email FROM pessoa ORDER BY id DESC";
+    ?>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Nome</th>
+                <th scope="col">CPF</th>
+                <th scope="col">Data de Nascimento</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                foreach ($pdo->query($sql) as $row) { //abrindo o block foreach
+            ?>
+                <tr>
+                    <th scope="col"><?= $row['id']?></th>
+                    <td scope="col"><?= $row['nome']?></td>
+                    <td scope="col"><?= $row['cpf']?></td>
+                    <td hscope="col"><?= $row['data_de_nascimento']?></td>
+                    <td scope="col"><?= $row['telefone']?></td>
+                    <td scope="col"><?= $row['email']?></td>
+                </tr>
+            <?php } //fechando block foreach
+                ?>
+        </tbody>
+    </table>
+
 </body>
 
 </html>
@@ -44,12 +84,8 @@
     }else{
         $acao = 'entrar';
     }  
-    
-    require "./Banco.php"; 
 
     echo $acao, "<br>";
-
-    $pdo = Banco::connect(); 
     var_dump($pdo); 
 
     $name = $_POST['name'];
@@ -61,20 +97,19 @@
     echo "<br> $name";
     echo "<br> $cpf";
     echo "<br> $dataNascimento";
-    echo "<br> $email";
     echo "<br> $telefone";
+    echo "<br> $email";
     
-    $stmt = $pdo->prepare("INSERT INTO pessoa(nome, cpf, data_de_nascimento, telefone, email) 
-    VALUES (:nome, :cpf, :data_de_nascimento, :telefone, :email)"); 
-
-    $stmt->execute(array(":nome"=>$name, ":cpf"=>$cpf, ":data_de_nascimento"=>$dataNascimento, ":telefone"=>$telefone,":email"=>$email));
-
+    
     if($acao == "salvar"){
-            try {
-                    
-                    echo "<br> DB OK! <br>";
+        try {
+            $stmt = $pdo->prepare("INSERT INTO pessoa(nome, cpf, data_de_nascimento, telefone, email) 
+            VALUES (:nome, :cpf, :data_de_nascimento, :telefone, :email)"); 
+        
+            $stmt->execute(array(':nome'=>$name, ':cpf'=>$cpf, ':data_de_nascimento'=>$dataNascimento, ':telefone'=>$telefone,':email'=>$email));
+            
             } catch (Exception $exception) {
-                die($exception->getMessage());
+                echo $exception->getMessage();
             }
     }
        

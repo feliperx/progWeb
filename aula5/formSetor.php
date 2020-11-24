@@ -1,9 +1,18 @@
+<?php
+    require "./Banco.php"; 
+    $pdo = Banco::connect(); 
+?>
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Cadastro Setor</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
 </head>
 
 <body>
@@ -27,7 +36,37 @@
         <input type="hidden" name="acao" value="salvar">
         <input type='submit' value="Salvar" />
 
-    </form>
+    </form> 
+
+    <?php 
+        $sql = "SELECT id, nome, email, ramal, instituicao_id FROM setor ORDER BY id DESC";
+    ?>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Ramal</th>
+                <th scope="col">instituicao_id</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                foreach ($pdo->query($sql) as $row) { //abrindo o block foreach
+            ?>
+                <tr>
+                    <th scope="col"><?= $row['id']?></th>
+                    <td scope="col"><?= $row['nome']?></td>
+                    <td scope="col"><?= $row['emal']?></td>
+                    <td hscope="col"><?= $row['ramal']?></td>
+                    <td scope="col"><?= $row['instituicao_id']?></td>
+                </tr>
+            <?php } //fechando block foreach
+                ?>
+        </tbody>
+    </table>
 
 </body>
 
@@ -39,13 +78,10 @@
     }else{
         $acao = 'entrar';
     }  
-    
-    require "./Banco.php"; 
+
 
     echo $acao, "<br>";
 
-    $pdo = Banco::connect(); 
-    var_dump($pdo); 
 
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -65,10 +101,10 @@
 
                 $stmt->execute(array(':nome'=>$name, ':email'=>$email, ':ramal'=>$ramal,':intituicao_id'=>$idInstituicao)); 
 
-                echo "<br><br>"; 
-                var_dump($stmt); 
-                echo "<br>"; 
-                echo "NL: ", $stmt->rowCount();
+                // echo "<br><br>"; 
+                // var_dump($stmt); 
+                // echo "<br>"; 
+                // echo "NL: ", $stmt->rowCount();
                 
             } catch (PDOException $exception) {
                 echo $exception->getMessage();
