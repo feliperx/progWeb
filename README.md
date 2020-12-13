@@ -8,3 +8,4 @@
 - Netbeans Apache IDE; 
 - VScode;
 - phpmyadmin (SGBD);  
+- Adianti (PHP Framework)
