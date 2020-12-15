@@ -1,13 +1,9 @@
 <?php
     /**
-     * CompleteFormDataGridView
      *
      * @version    1.0
-     * @package    samples
-     * @subpackage tutor
-     * @author     Pablo Dall'Oglio
-     * @copyright  Copyright (c) 2006 Adianti Solutions Ltd. (http://www.adianti.com.br)
-     * @license    http://www.adianti.com.br/framework-license
+     * @package    dbprogweb_t2
+     * @author     Felipe Xaud
      */
     class CadastroPessoa extends TPage
     {
@@ -33,17 +29,49 @@
             $cpf   = new TEntry('cpf');
             $dataNascimento   = new TDate('data_nascimento');
             $rg   = new TEntry('rg');
-            $sexo   = new TEntry('sexo');
+            $sexo   = new TRadioGroup('sexo');
             $cep   = new TEntry('cep');
             $endereco   = new TEntry('endereco');
             $numero   = new TEntry('numero');
             $bairro   = new TEntry('bairro');
             $cidade   = new TEntry('cidade');
-            $estado   = new TEntry('estado');
+            $estado   = new TCombo('estado');
             $nomePai   = new TEntry('nome_pai');
             $nomeMae   = new TEntry('nome_mae');
             $telefone   = new TEntry('telefone');
             $email   = new TEntry('email'); 
+
+            $itemsSexo = ['Masculino'=>'Masc.', 'Feminino'=>'Fem.', 'Indefinido'=>'Indef.']; 
+            $itemsEstado = ['AC' => 'Acre',
+                        'AL' => 'Alagoas',
+                        'AM' => 'Amazonas', 
+                        'BA' => 'Bahia', 
+                        'CE' => 'Ceara', 
+                        'ES' => 'Espirito Santo', 
+                        'GO' => 'Goias', 
+                        'MA' => 'Maranhao', 
+                        'MT' => 'Mato Grosso', 
+                        'MG' => 'Minas Gerais', 
+                        'PA' => 'Para', 
+                        'PB' => 'Paraiba', 
+                        'PR' => 'Parana', 
+                        'PE' => 'Pernambuco', 
+                        'PI' => 'Piaui', 
+                        'RJ' => 'Rio de Janeiro', 
+                        'RN' => 'Rio Grande do Norte', 
+                        'RS' => 'Rio Grande do Sul', 
+                        'RO' => 'Rondonia', 
+                        'RR' => 'Roraima', 
+                        'SC' => 'Santa Catarina', 
+                        'SP' => 'Sao Paulo', 
+                        'SE' => 'Sergipe', 
+                        'TO' => 'Tocantins', 
+                        'DF' => 'Distrito Federal'               
+        ];
+
+            $sexo->addItems($itemsSexo); 
+            $sexo->setLayout('horizontal');
+            $estado->addItems($itemsEstado);
 
             //add masks 
             $cpf->setMask('999.999.999-99');
@@ -110,7 +138,7 @@
             // wrap objects
             $vbox = new TVBox;
             $vbox->style = 'width: 100%';
-            //$vbox->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
+            $vbox->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
             $vbox->add($this->form);
             $vbox->add(TPanelGroup::pack('', $this->datagrid));
             
@@ -220,7 +248,7 @@
                     TTransaction::open('dbprogweb_t2');
                     
                     // instantiates object person
-                    $person = new Pesssoa($key);
+                    $person = new Pessoa($key);
                     
                     // lança os data do person no form
                     $this->form->setData($person);
