@@ -1,11 +1,10 @@
-# ProgWeb com php - nvl Basic 
+# Aprendendo Programação web com php - nível Básico ao Intermediário :elephant:
 
-- Professor: Francisco 
-- UERR
 
-# Ferramentas 
+## Ferramentas 
 
 - Netbeans Apache IDE; 
 - VScode;
-- phpmyadmin (SGBD);  
-- Adianti (PHP Framework)
+- phpmyadmin (SGBD);
+- Adianti (PHP Framework).
+
